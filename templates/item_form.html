@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="form-wrap wide">
+  <a class="back-link" href="{{ url_for('home') }}">&#8592; Back to listings</a>
+  <div class="eyebrow muted">HELP YOUR CAMPUS COMMUNITY</div>
+  <h1>Report an item</h1>
+  {% if shared_storage %}
+  <p class="form-intro">Fill in the details below. Listings are saved to the shared project database.</p>
+  {% else %}
+  <p class="form-intro">Fill in the details below. Your listing will be saved in a local JSON file.</p>
+  {% endif %}
+  {% if temporary_storage %}
+  <div class="flash info">Vercel storage is temporary. Add a Postgres database and set DATABASE_URL in the Vercel project to keep listings available across devices and deployments.</div>
+  {% endif %}
+  <form method="post" enctype="multipart/form-data" class="form-card item-form">
+    <label>Lost or found?
+      <select name="kind" required>
+        <option value="">Choose one</option>
+        <option>Lost</option>
+        <option>Found</option>
+      </select>
+    </label>
+    <label>Item name
+      <input name="title" required maxlength="120" placeholder="e.g. Blue water bottle">
+    </label>
+    <label>Category
+      <select name="category" required>
+        <option value="">Choose a category</option>
+        {% for c in categories %}<option>{{ c }}</option>{% endfor %}
+      </select>
+    </label>
+    <label>Location
+      <input name="location" required placeholder="e.g. Library, 2nd floor">
+    </label>
+    <label>Date lost or found
+      <input name="item_date" type="date" required>
+    </label>
+    <label>Contact method
+      <input name="contact" required placeholder="Email or phone">
+    </label>
+    <label class="span-two">Description
+      <textarea name="description" required rows="4" placeholder="Color, brand, or other details"></textarea>
+    </label>
+    <label class="span-two">Photo (optional)
+      <input id="photo-input" type="file" name="photo" accept="image/jpeg,image/png,image/webp" capture="environment">
+      <span class="hint">Take a photo with your phone camera or choose an image. Maximum size: 1 MB.</span>
+      <img id="photo-preview" class="photo-preview" alt="Selected item preview" hidden>
+    </label>
+    <button class="button button-dark span-two">Submit listing &#8594;</button>
+  </form>
+</section>
+{% endblock %}

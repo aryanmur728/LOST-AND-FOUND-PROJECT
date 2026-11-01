@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="detail-wrap">
+  <a class="back-link" href="{{ url_for('home') }}">&#8592; Back to listings</a>
+  <div class="detail-grid">
+    <div class="detail-image">
+      {% if item.photo_data %}<img src="{{ item.photo_data }}" alt="Photo of {{ item.title }}">{% else %}<span>&#8981;</span>{% endif %}
+    </div>
+    <article class="detail-content">
+      <div class="detail-badges">
+        <span class="badge {{ item.kind|lower }}">{{ item.kind }}</span>
+        <span class="badge neutral">{{ item.category }}</span>
+        <span class="badge {{ 'resolved' if item.status == 'Resolved' else 'neutral' }}">{{ item.status }}</span>
+      </div>
+      <h1>{{ item.title }}</h1>
+      <p class="detail-desc">{{ item.description }}</p>
+      <div class="detail-facts">
+        <div><small>LOCATION</small><b>&#8982; &nbsp;{{ item.location }}</b></div>
+        <div><small>DATE</small><b>{{ item.item_date }}</b></div>
+        <div><small>CONTACT</small><b>{{ item.contact }}</b></div>
+      </div>
+      <div class="owner-actions">
+        {% if item.status != 'Resolved' %}
+        <form method="post" action="{{ url_for('resolve', item_id=item.id) }}">
+          <button class="button button-dark">Mark resolved</button>
+        </form>
+        {% endif %}
+        <form method="post" action="{{ url_for('delete', item_id=item.id) }}" onsubmit="return confirm('Delete this listing?')">
+          <button class="button button-danger">Delete listing</button>
+        </form>
+      </div>
+    </article>
+  </div>
+</section>
+{% endblock %}

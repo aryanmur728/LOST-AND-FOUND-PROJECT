@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block content %}
+<section class="empty">
+  <span>&#8981;</span>
+  <h1>{{ title }}</h1>
+  <p>{{ message }}</p>
+  <a class="button button-dark" href="{{ url_for('home') }}">Back to listings</a>
+</section>
+{% endblock %}
